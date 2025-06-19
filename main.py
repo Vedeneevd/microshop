@@ -1,24 +1,30 @@
 from fastapi import FastAPI
+from items_views import router as items_router
+from users.views import router as users_router
 
 import uvicorn
 
 app = FastAPI()
+app.include_router(items_router)
+app.include_router(users_router)
 
 
-@app.get('/')
+@app.get("/")
 def hello_index():
     return {
         "message": "hello index",
     }
 
 
-@app.get('/hello/')
+@app.get("/hello/")
 def hello(name: str = "World"):
     name = name.strip().title()
     return {"message": f"Hello {name}!"}
 
 
 app.get("/calc/add/")
+
+
 def add(a: int, b: int):
     return {
         "a": a,
@@ -27,5 +33,5 @@ def add(a: int, b: int):
     }
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
